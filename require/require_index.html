@@ -6,7 +6,9 @@
 		$(function(){
 			var now = (new Date()).getTime();
 			require('./dummy.js?v='+now, function(){
-				$('#message').text=dummy();
+				var msg=dummy();
+				console.log('msg='+msg);
+				$('#message').text(msg).css({'background-color':'red'});
 			});
 		});
 	</script>
