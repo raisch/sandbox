@@ -1,0 +1,39 @@
+<html>
+<head>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+	<script type="text/javascript" src="./runner.js">
+		$(function(){
+			var now = (new Date()).getTime(),
+				runner = new Runner(
+					
+					function(){
+						var args=Array.prototype.slice.call(arguments);
+						console.log('first (args=['+args.toString()+'])');
+						args.push('first');
+						this.next(args);
+					},
+					
+					function(){
+						var args=Array.prototype.slice.call(arguments);
+						console.log('second (args=['+args.toString()+'])');
+						args.push('second');
+						//this.error('second step failed', args);
+						this.next(args);
+					},
+			
+					function(){
+						var args=Array.prototype.slice.call(arguments);
+						console.log('third (args='+args.toString()+')');
+						args.push('third');
+						this.next(args);
+					}
+				);
+			
+			runner.start('starting');
+		});
+	</script>
+</head>
+<body>
+	<div id="message">This is a test.</div>
+</body>
+</html>
