@@ -1,4 +1,5 @@
 // require.js
+// 20110630 RR
 
 function require(uri,cb) {
 	var ext=uri.match(/^.*\/.*\.(\w+)/) && RegExp.$1.toString().toUpperCase(),
