@@ -1,9 +1,9 @@
 <html>
 <head>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 	<script type="text/javascript" src="./runner.js">
-		$(function(){
-			var now = (new Date()).getTime();
+	
+		function init() {
+			
 			new Runner(
 				// step 1	
 				function(args){
@@ -22,13 +22,32 @@
 				function(args){
 					console.log('third (args='+args+')');
 					args.push('third');
-					this.next({success:true,args:args});
+					this.next(args);
 				}
-			).start('starting');
-		});
+			).setHandler('onComplete',function(args){
+				console.log(args);
+				document.getElementById('message').innerText = args.toString();
+			}).start('starting');
+			
+		};
+		
+		if(document.loaded) {
+			init();
+		}
+		else {
+			if(window.addEventListener) {
+				window.addEventListener('load', init, false);
+			}
+			else {
+				window.attachEvent('onload', init);
+			}
+		}
+		
 	</script>
 </head>
 <body>
+	
 	<div id="message">This is a test.</div>
+	
 </body>
 </html>
