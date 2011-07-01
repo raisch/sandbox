@@ -3,33 +3,28 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
 	<script type="text/javascript" src="./runner.js">
 		$(function(){
-			var now = (new Date()).getTime(),
-				runner = new Runner(
-					
-					function(){
-						var args=Array.prototype.slice.call(arguments);
-						console.log('first (args=['+args.toString()+'])');
-						args.push('first');
-						this.next(args);
-					},
-					
-					function(){
-						var args=Array.prototype.slice.call(arguments);
-						console.log('second (args=['+args.toString()+'])');
-						args.push('second');
-						//this.error('second step failed', args);
-						this.next(args);
-					},
-			
-					function(){
-						var args=Array.prototype.slice.call(arguments);
-						console.log('third (args='+args.toString()+')');
-						args.push('third');
-						this.next(args);
-					}
-				);
-			
-			runner.start('starting');
+			var now = (new Date()).getTime();
+			new Runner(
+				// step 1	
+				function(args){
+					console.log('first (args=['+args+'])');
+					args.push('first');
+					this.next(args);
+				},
+				// step 2
+				function(args){
+					console.log('second (args=['+args+'])');
+					args.push('second');
+					//this.error('second step failed', args);
+					this.next(args);
+				},
+				// step 3
+				function(args){
+					console.log('third (args='+args+')');
+					args.push('third');
+					this.next({success:true,args:args});
+				}
+			).start('starting');
 		});
 	</script>
 </head>
