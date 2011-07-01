@@ -30,7 +30,7 @@ if (!Object.prototype.mixin) {
 }
 
 // automagic execution of script tag contents
-function(scriptName) {
+(function(scriptName) {
     var re = new RegExp('\\b' + scriptName + '\\b', 'i');
 
     for (var scripts = document.getElementsByTagName('script'), i = 0, len = scripts.length; i < len; i++) {
@@ -42,4 +42,4 @@ function(scriptName) {
             }
         }
     }
-}
+})('utils.js');

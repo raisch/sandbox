@@ -1,22 +1,23 @@
 <html>
 <head>
-	<script type="text/javascript" src="../require/require.js">
-		require('../events/EventTarget.js',function(){
-			console.dir(EventListener);
-		})
-	</script>
+	<script type="text/javascript" src="../require/require.js"></script>
+	
+	<script type="text/javascript" src="../util/util.js"></script>
+	
+	<script type="text/javascript" src="../events/EventListener.js"></script>
 	
 	<script type="text/javascript" src="./runner.js">
-	
 		function init() {
-			
-			new Runner(
+	
+			var runner=new Runner(
+				
 				// step 1	
 				function(args){
 					console.log('first (args=['+args+'])');
 					args.push('first');
 					this.next(args);
 				},
+				
 				// step 2
 				function(args){
 					console.log('second (args=['+args+'])');
@@ -24,19 +25,25 @@
 					//this.error('second step failed', args);
 					this.next(args);
 				},
+				
 				// step 3
 				function(args){
 					console.log('third (args='+args+')');
 					args.push('third');
 					this.next(args);
 				}
-			).setHandler('onComplete',function(args){
+				
+			);
+			
+			runner.setHandler('onComplete',function(args){
 				console.log(args);
 				document.getElementById('message').innerText = args.toString();
-			}).start('starting');
+			});
+			
+			runner.start('starting');
 			
 		};
-		
+
 		if(document.loaded) {
 			init();
 		}
@@ -51,9 +58,11 @@
 		
 	</script>
 </head>
+
 <body>
 	
 	<div id="message">This is a test.</div>
 	
 </body>
+
 </html>

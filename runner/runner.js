@@ -1,90 +1,18 @@
 // runner.js 20110630 RR
 
+// requires util.js, EventListener.js
+
 var Runner;
 
 (function() {
-
-    // Function.prototype.bind polyfill - from developer.mozilla.org
-    // 		https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
-    if (!Function.prototype.bind) {
-        Function.prototype.bind = function(obj) {
-            if (typeof this !== 'function') 
-            	throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
-            var slice = [].slice,
-            	args = slice.call(arguments, 1),
-            	self = this,
-           		nop = function() {},
-           		bound = function() {
-                	return self.apply(this instanceof nop ? this : (obj || {}), args.concat(slice.call(arguments)));
-           		 };
-            bound.prototype = this.prototype;
-            return bound;
-        };
-    }
-
-    if (!Object.prototype.mixin) {
-        Object.prototype.mixin = function() {
-            var sources = Array.prototype.slice.call(arguments);
-            for (var i = 0, len = sources.length; i < len; i++) {
-                for (var name in sources[i].prototype) {
-                    this.prototype[name] = sources[i].prototype[name];
-                }
-            }
-            return this;
-        };
-    }
-
-    // EventListener
-    EventListener = function() {};
-
-    EventListener.prototype.addListener = function(type, listener) {
-        if (typeof this._listeners[type] == "undefined") {
-            this._listeners[type] = [];
-        }
-        this._listeners[type].push(listener);
-    };
-
-    EventListener.prototype.removeListener = function(type, listener) {
-        if (this._listeners[type] instanceof Array) {
-            var listeners = this._listeners[type];
-            for (var i = 0, len = listeners.length; i < len; i++) {
-                if (listeners[i] === listener) {
-                    listeners.splice(i, 1);
-                    break;
-                }
-            }
-        }
-    };
-
-    EventListener.prototype.fire = function(evt) {
-        if (typeof evt == "string") {
-            evt = {
-                type: evt
-            };
-        }
-        if (!evt.target) {
-            evt.target = this;
-        }
-
-        if (!evt.type) { //falsy
-            throw new Error("Event object missing 'type' property.");
-        }
-
-        if (this._listeners[evt.type] instanceof Array) {
-            var listeners = this._listeners[evt.type];
-            for (var i = 0, len = listeners.length; i < len; i++) {
-                listeners[i].call(this, evt);
-            }
-        }
-    };
-
+    
     // Runner 
     Runner = function() {
 
         // tasks
         this._queue = (arguments.length >= 0 ? Array.prototype.slice.call(arguments) : []);
 
-        // events
+        // events - required by EventListener.js
         this._listeners = {};
 
         // if true, print info
@@ -116,18 +44,18 @@ var Runner;
         };
 
         // handle onStart event
-        this.addListener('onStart', function(evt) {
+        this.addListener('onStart', function(evt) { // from EventListener.js
             var handler = this._handlers['onStart'];
             if (handler) handler(evt.args);
         });
 
         // handle onNext event
-        this.addListener('onNext', function(evt) {
+        this.addListener('onNext', function(evt) { // from EventListener.js
             if (this._queue.length) {
                 (this._queue.shift().bind(this))(evt.args);
             }
             else {
-                this.fire({
+                this.fire({ // from EventListener.js
                     type: 'onComplete',
                     args: evt.args
                 });
@@ -135,28 +63,30 @@ var Runner;
         });
 
         // handle onLast event
-        this.addListener('onLast', function(evt) {
+        this.addListener('onLast', function(evt) { // from EventListener.js
             this._queue = [];
-            this.fire({
+            this.fire({ // from EventListener.js
                 type: 'onComplete',
                 args: evt.args
             });
         });
 
         // handle onComplete event
-        this.addListener('onComplete', function(evt) {
+        this.addListener('onComplete', function(evt) { // from EventListener.js
             var handler = this._handlers['onComplete'];
             if (handler) handler(evt.args);
         });
 
         // handle onError event
-        this.addListener('onError', function(evt) {
+        this.addListener('onError', function(evt) { // from EventListener.js
             var handler = this._handlers['onError'];
             if (handler) handler(evt.err, evt.args);
         });
 
         return this;
-    }.mixin(EventListener);
+    };
+    
+    Runner.mixin(EventListener); // from util.js
 
     // Original
     Runner.prototype.setHandler = function(eventName, handler) {
@@ -170,7 +100,7 @@ var Runner;
     };
 
     Runner.prototype.next = function(args) {
-        this.fire({
+        this.fire({ // from EventListener.js
             type: 'onNext',
             args: args
         });
@@ -178,7 +108,7 @@ var Runner;
     };
 
     Runner.prototype.last = function(args) {
-        this.fire({
+        this.fire({ // from EventListener.js
             type: 'onLast',
             args: args
         });
@@ -186,7 +116,7 @@ var Runner;
     };
 
     Runner.prototype.error = function(err, args) {
-        this.fire({
+        this.fire({ // from EventListener.js
             type: 'onError',
             err: err,
             args: args
@@ -197,7 +127,7 @@ var Runner;
     Runner.prototype.start = function() {
         var args = Array.prototype.slice.call(arguments);
 
-        this.fire({
+        this.fire({ // from EventListener.js
             type: 'onStart',
             args: args
         });
@@ -206,7 +136,7 @@ var Runner;
             (this._queue.shift().bind(this))(args);
         }
         else {
-            this.fire({
+            this.fire({ // from EventListener.js
                 type: 'onComplete',
                 args: args
             });
