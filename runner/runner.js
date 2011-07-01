@@ -1,7 +1,6 @@
 // runner.js 20110630 RR
-console.log('runner.js');
 
-var EventListener, Runner;
+var Runner;
 
 (function() {
 

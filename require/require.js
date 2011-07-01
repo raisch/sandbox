@@ -34,5 +34,34 @@ function require(uri,cb) {
 		}
 	}
 	
-	document.getElementsByTagName(tag==='script'?'body':'head')[0].appendChild(elt);
+	function init(tag,elt) {
+		document.getElementsByTagName(tag==='script'?'body':'head')[0].appendChild(elt);
+	}
+	
+	if(document.loaded) {
+			init(tag,elt);
+	}
+	else {
+		if(window.addEventListener) {
+			window.addEventListener('load', init.bind(null,tag,elt), false);
+		}
+		else {
+			window.attachEvent('onload', init.bind(null,tag,elt));
+		}
+	}
 }
+
+// automagic execution of script tag contents
+(function(scriptName) {
+    var re = new RegExp('\\b' + scriptName + '\\b', 'i');
+
+    for (var scripts = document.getElementsByTagName('script'), i = 0, len = scripts.length; i < len; i++) {
+        var elt = scripts[i];
+        if (elt && elt.type.toLowerCase() === 'text/javascript' && elt.src && elt.src.match(re)) {
+            var code = elt.text || elt.innerText || elt.innerHTML;
+            if (code) {
+                eval(code);
+            }
+        }
+    }
+})('require.js');

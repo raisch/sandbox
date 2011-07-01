@@ -1,5 +1,5 @@
 
-// Function.prototype.bind polyfill - from developer.mozilla.org
+// Function.prototype.bind polyfill - from developer.mozilla.org (for IE)
 // 		https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
 if (!Function.prototype.bind) {
     Function.prototype.bind = function(obj) {
