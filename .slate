@@ -1,0 +1,120 @@
+# Slate
+
+# Config
+config defaultToCurrentScreen true
+config windowHintsFontSize 100
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+config windowHintsTopLeftX (windowSizeX/2)-(windowHintsWidth/2)
+config windowHintsTopLeftY (windowSizeY/2)-(windowHintsHeight/2)
+config windowHintsIgnoreHiddenWindows false
+
+# General aliases
+alias sox screenOriginX
+alias soy screenOriginY
+alias ssx screenSizeX
+alias ssy screenSizeY
+
+# Position aliases
+alias centered ${sox}+${ssx}/8;${soy}+${ssy}/8 ${ssx}/8*6;${ssy}/8*6
+alias fullscreen ${sox};${soy} ${ssx};${ssy}
+alias leftHalf ${sox};${soy} ${ssx}/2;${ssy}
+alias bottomHalf ${sox};${soy}+${ssy}/2 ${ssx};${ssy}/2
+alias topHalf ${sox};${soy} ${ssx};${ssy}/2
+alias rightHalf ${sox}+${ssx}/2;${soy} ${ssx}/2;${ssy}
+alias topLeftQuarter ${sox};${soy} ${ssx}/2;${ssy}/2
+alias topRightQuarter ${sox}+${ssx}/2;${soy} ${ssx}/2;${ssy}/2
+alias bottomLeftQuarter ${sox};${soy}+${ssy}/2 ${ssx}/2;${ssy}/2
+alias bottomRightQuarter ${sox}+${ssx}/2;${soy}+${ssy}/2 ${ssx}/2;${ssy}/2
+
+## ============================
+## Move Bindings 
+## ============================
+
+## fullscreen = ctrl+alt+o
+# bind o:ctrl;alt move ${fullscreen}
+
+## ----------------------------
+##        u     k     i
+##        h     g     l
+##        n     j     m
+## ----------------------------
+
+# bind u:ctrl;alt move ${topLeftQuarter}
+# bind k:ctrl;alt move ${topHalf}
+# bind i:ctrl;alt move ${topRightQuarter}
+ 
+# bind h:ctrl;alt move ${leftHalf}
+# bind g:ctrl;alt move ${centered}
+# bind l:ctrl;alt move ${rightHalf}
+ 
+# bind n:ctrl;alt move ${bottomLeftQuarter}
+# bind j:ctrl;alt move ${bottomHalf}
+# bind m:ctrl;alt move ${bottomRightQuarter}
+
+## ============================
+## Move Bindings
+## ============================
+
+## fullscreen = ctrl+alt+f
+bind f:ctrl;alt move ${fullscreen}
+
+## ----------------------------
+##        q     w     e
+##        a     s     d
+##        z     x     c
+## ----------------------------
+
+bind q:ctrl;alt move ${topLeftQuarter}
+bind w:ctrl;alt move ${topHalf}
+bind e:ctrl;alt move ${topRightQuarter}
+
+bind a:ctrl;alt move ${leftHalf}
+bind s:ctrl;alt move ${centered}
+bind d:ctrl;alt move ${rightHalf}
+
+bind z:ctrl;alt move ${bottomLeftQuarter}
+bind x:ctrl;alt move ${bottomHalf}
+bind c:ctrl;alt move ${bottomRightQuarter}
+
+# Resize Bindings
+bind right:alt       resize +10% +0
+bind left:alt        resize -10% +0
+bind up:alt          resize +0   -10%
+bind down:alt        resize +0   +10%
+bind right:ctrl;alt  resize -10% +0 bottom-right
+bind left:ctrl;alt   resize +10% +0 bottom-right
+bind up:ctrl;alt     resize +0   +10% bottom-right
+bind down:ctrl;alt   resize +0   -10% bottom-right
+
+# Push Bindings
+bind right:ctrl;cmd  push right bar-resize:screenSizeX/3
+bind left:ctrl;cmd   push left  bar-resize:screenSizeX/3
+bind up:ctrl;cmd     push up    bar-resize:screenSizeY/2
+bind down:ctrl;cmd   push down  bar-resize:screenSizeY/2
+
+# Nudge Bindings
+bind right:shift;alt nudge +10% +0
+bind left:shift;alt  nudge -10% +0
+bind up:shift;alt    nudge +0   -10%
+bind down:shift;alt  nudge +0   +10%
+
+# Throw Bindings
+bind 1:ctrl;alt         throw 0 resize
+bind 2:ctrl;alt         throw 1 resize
+bind 3:ctrl;alt         throw 2 resize
+bind right:ctrl;alt;cmd throw right resize
+bind left:ctrl;alt;cmd  throw left  resize
+bind up:ctrl;alt;cmd    throw up    resize
+bind down:ctrl;alt;cmd  throw down  resize
+
+# Focus Bindings
+bind right:cmd    focus right
+bind left:cmd     focus left
+bind up:cmd       focus up
+bind down:cmd     focus down
+bind up:cmd;alt   focus behind
+bind down:cmd;alt focus behind
+
+# Window Hints
+bind esc:cmd hint
