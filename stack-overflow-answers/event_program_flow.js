@@ -3,6 +3,8 @@
      Example of using events to orchestrate program flow in an async
      environment.
 
+     ref http://stackoverflow.com/questions/27377614/why-variable-assignation-doesnt-work-as-excpected
+
      */
 
     var util = require('util'),
