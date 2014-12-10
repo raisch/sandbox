@@ -14,10 +14,8 @@
         c +=
             d >> 8
             |
-            b > 4 ?
-                NaN
-                :
-            d * (1 << -8 * b)
+            b > 4 ? NaN :
+        cd d * (1 << -8 * b)
     )
       d = parseInt(
           +d
