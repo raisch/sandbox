@@ -1,6 +1,8 @@
 sandbox - various unsupported things
 =======
-
+<script>
+console.log('goo');
+</script>
 Just a place for me to play with JS, NodeJS, et. al.
 
 - events : implementation of a generic event emitter
