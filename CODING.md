@@ -1,21 +1,31 @@
 ## General Rules
 
-### Quoting
+### Indenting
 
-Always use single-quotes *unless you need to escape a single quote inside the string*
-but even then, prefer '\'' over double-quotes.
+Always set your editor to insert two spaces for every tab-stop.
 
 #### Rationale
 
-Because we need to have one consistent kind of quoting.
+Using two space tab stops is easily visually discerned and improves readability without sacrificing page space.
+
+### Quoting
+
+Always use single-quotes *unless you need to escape a single quote inside the string*
+but even then, prefer `'quoted \'thing\'` here' over double-quotes.
+
+#### Rationale
+
+We should have consistent quoting for readability and understandability.
 
 ### Strict Mode
 
 Always add `use 'strict';` as the first non-whitespace, non-comment line of all modules.
 
+### Rationale
+
 See [John Resig - ECMAScript 5 Strict Mode, JSON, and More](http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/).
 
-Strict mode will throw an error if you attempt to use the global object. See [Use of Global Scope](https://github.com/raisch/sandbox/blob/master/CODING.md#use-of-global-scope)
+**NOTE:** Strict mode will throw an error if you attempt to use the global object. See [Use of Global Scope](https://github.com/raisch/sandbox/blob/master/CODING.md#use-of-global-scope)
 
 ### Use Of Global Scope
 
@@ -25,8 +35,85 @@ See [Scoping Rules](https://github.com/raisch/sandbox/blob/master/CODING.md#scop
 
 #### Rationale
 
+**Q: Why are globals considered dangerous?**
+
+**A:**
+```js
+// It is important to declare your variables.
+
+(function() {
+    var foo = 'Hello, world!';
+    console.log(foo);  //=> Hello, world!
+})();
+
+console.log(foo);  //=> ERROR
+
+// Because if you don't, they become global variables.
+
+(function() {
+    foo = 'Hello, world!';
+    console.log(foo)  //=> Hello, world!
+})();
+
+console.log(foo)  //=> Hello, world!
+
+
+// And when global variables sneak into your code they can cause problems,
+// especially in applications with concurrency.
+
+const printRange = function() {
+    for (i = 0; i < 10; i += 1) { // i is either globally or module-scoped.
+        console.log(i);
+    }
+};
+
+printRange();  //=> 0 1 2 3 4 5 6 7 8 9
+
+var eatUpRange = function() {
+    for (i = 0; i < 10; i += 1) {
+        // don't print anything;
+    }
+};
+
+// Both loops increment i at the same time, which causes strange behavior.
+window.setTimeout(eatUpRange, 10);
+window.setTimeout(printRange, 10);  //=> 2 3 7 8 9 !!!
+```
+
+### Scoping Rules
+
+Know your scoping rules and scope all variables correctly.
+
+- `global.i = 0` is globally scoped - (See [Use of Global Scope](https://github.com/raisch/sandbox/blob/master/CODING.md#use-of-global-scope))
+- `i = 0` is module-scoped.
+- `var i = 0` is function or module-scoped.
+- `const i = 0` is *IMMUTABLE* and block-scoped, or if declared outside of a block, module-scoped.
+- `let i = 0` is *MUTABLE* and block-scoped, or if declared outside of a block, module-scoped.
+
+```js
+function() { // incorrect
+  var foo = true; // foo is scoped to the module
+  var bar = false;
+
+  foo = !foo;
+}
+
+function() { // correct
+  let foo = true;
+  const bar = false;
+
+  foo = !foo;
+}
+```
+
+When in doubt, use `const`.
+
+#### Rationale
+
+Improperly scoped variables can cause a host of subtle, difficult to locate errors.
+
 Since we have a lot of legacy code that uses the global object (which strict mode will not allow),
-we prefer to refactor
+we prefer to refactor this
 
 ```js
 // producer.js
@@ -49,48 +136,59 @@ const { FOO } = require('./producer.js');
 
 console.log(FOO);
 ```
+### Variable Declarations
 
-Why are globals considered dangerous?
+Always define variables with `let` or `const`.
+
+#### Rationale
+
+Misusing variable declarations can inject subtle, difficult to find errors into your code.
+
+Using `let` or `const` allows the JavaScript intrepreter to help you write better code.
 
 ```js
-// It is important to declare your variables.
+// module.js
+let foo = 1;
+const bar = 1;
 
-(function() {
-    var foo = 'Hello, world!';
-    print(foo);  //=> Hello, world!
-})();
+module.exports = {
+  assignToLet: function() { return foo = 2; },
+  assignToConst: function() { return bar = 2; }
+}
 
-// Because if you don't, the become global variables.
+// consumer
+const m = require('./module.js');
 
-(function() {
-    foo = 'Hello, world!';
-    print(foo)  //=> Hello, world!
-})();
+> m.assignToLet() // => 2
 
-print(foo)  //=> Hello, world!
-
-
-// When global variables sneak into your code they can cause problems,
-// especially in applications with concurrency.
-
-var count = function() {
-    for (i = 0; i < 10; i += 1) { // i is either globally or module-scoped.
-        print(i);
-    }
-};
-
-count();  //=> 0 1 2 3 4 5 6 7 8 9
-
-var eatUpCount = function() {
-    for (i = 0; i < 10; i += 1) {
-        // don't print anything;
-    }
-};
-
-// Both loops increment i at the same time, which causes strange behavior.
-window.setTimeout(eatUpCount, 10);
-window.setTimeout(count,      10);  //=> 2 3 7 8 9 !!!
+> m.assignToConst() // throws TypeError: Assignment to constant variable.
 ```
+
+Consider what would happen if we mis-declared a constant using `let`, which elsewhere to which we assigned a new value.
+
+How would you locate this error? 
+
+Typically using the node debugger and setting a watch on the variable. 
+
+But why would we want to go through that bother when we could have just declared the variable correctly?
+
+__Possibly Unexpected Behavior__
+
+Would you expect this 
+
+```js
+const obj = { foo: true };
+
+obj.bar = false;
+```
+
+to throw a `TypeError: Assignment to constant variable`?
+
+Well you shouldn't because we are not reassigning the value associated with the symbol `obj`. 
+
+Rather we're setting properties within it, which doesn't violate our idea of a constant.
+
+When in doubt, define everything you **know** shouldn't be reassigned using `const`.
 
 ### Module Patterns
 
@@ -216,39 +314,6 @@ function(...args, cb) {
 }
 ```
 
-### Scoping Rules
-
-Know your scoping rules and scope all variables correctly.
-
-- `global.i = 0` is globally scoped - See See [Use of Global Scope](https://github.com/raisch/sandbox/blob/master/CODING.md#use-of-global-scope)
-- `i = 0` is globally scoped or scoped to the file.
-- `var i = 0` is scoped to the module.
-- `let i = 0` and `const i = 0` are scoped to the enclosing block or, if declared outside of a block, to the module.
-
-```js
-function() { // incorrect
-  var foo = true; // foo is scoped to the module
-  var bar = false;
-
-  foo = !foo;
-}
-```
-
-```js
-function() { // correct
-  let foo = true;
-  const bar = false;
-
-  foo = !foo;
-}
-```
-
-When in doubt, use `const`.
-
-#### Rationale
-
-Improperly scoped variables can cause a host of subtle, difficult to locate errors.
-
 ### Arrow Functions
 
 ```js
@@ -268,6 +333,8 @@ Improperly scoped variables can cause a host of subtle, difficult to locate erro
   }
 ```
 
-## JS Developer Toolkit
+## JS Power Developer Toolkit
 
+### assert
 ### lodash
+### json-safe-stringify
