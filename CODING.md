@@ -15,9 +15,13 @@ Always add `use 'strict';` as the first non-whitespace, non-comment line of all 
 
 See [John Resig - ECMAScript 5 Strict Mode, JSON, and More](http://ejohn.org/blog/ecmascript-5-strict-mode-json-and-more/).
 
-### Use Of [Global Scope]
+Strict mode will throw an error if you attempt to use the global object. See [Use of Global Scope](https://github.com/raisch/sandbox/blob/master/CODING.md#use-of-global-scope)
+
+### Use Of Global Scope
 
 Never scope variables globally.
+
+See [Scoping Rules](https://github.com/raisch/sandbox/blob/master/CODING.md#scoping-rules).
 
 #### Rationale
 
@@ -214,12 +218,12 @@ function(...args, cb) {
 
 ### Scoping Rules
 
-Know your scoping rules and scope all vars correctly.
+Know your scoping rules and scope all variables correctly.
 
-- `var` is scoped to the module.
-- `let` and `const` are scoped to the enclosing block.
-
-When in doubt, use `const`.
+- `global.i = 0` is globally scoped - See See [Use of Global Scope](https://github.com/raisch/sandbox/blob/master/CODING.md#use-of-global-scope)
+- `i = 0` is globally scoped or scoped to the file.
+- `var i = 0` is scoped to the module.
+- `let i = 0` and `const i = 0` are scoped to the enclosing block or, if declared outside of a block, to the module.
 
 ```js
 function() { // incorrect
@@ -238,6 +242,12 @@ function() { // correct
   foo = !foo;
 }
 ```
+
+When in doubt, use `const`.
+
+#### Rationale
+
+Improperly scoped variables can cause a host of subtle, difficult to locate errors.
 
 ### Arrow Functions
 
