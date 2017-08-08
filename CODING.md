@@ -2,11 +2,13 @@
 
 ### Indenting
 
-Always set your editor to insert two spaces for every tab-stop.
+Always insert two spaces for every tab-stop.
 
 #### Rationale
 
-Using two space tab stops is easily visually discerned and improves readability without sacrificing page space.
+Using two space tab-stops is easily visually discerned and improves readability without sacrificing page space.
+
+Also, indent everything correctly, for the same reason.
 
 ### Quoting
 
