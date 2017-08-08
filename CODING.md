@@ -11,11 +11,15 @@ Using two space tab stops is easily visually discerned and improves readability 
 ### Quoting
 
 Always use single-quotes *unless you need to escape a single quote inside the string*
-but even then, prefer `'quoted \'thing\'` here' over double-quotes.
+but even then, prefer `'quoted \'thing\' here'` over using double-quotes.
 
 #### Rationale
 
-We should have consistent quoting for readability and understandability.
+Consistent quoting improves both readability and understandability.
+
+**NOTE**: A lot of developers I know prefer code that can be read "with a glance" rather than
+something they have to convert in their heads to a more understandable form. This is especially
+critical when bug-hunting under time pressure.
 
 ### Strict Mode
 
@@ -35,7 +39,7 @@ See [Scoping Rules](https://github.com/raisch/sandbox/blob/master/CODING.md#scop
 
 #### Rationale
 
-**Q: Why are globals considered dangerous?**
+**Q: Why are globals considered dangerous?** (Extracted/edited from [hallettj/global-variables-are-bad.js](https://gist.github.com/hallettj/64478))
 
 **A:**
 ```js
