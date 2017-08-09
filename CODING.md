@@ -28,15 +28,18 @@ If you must deviate from them, be prepared to defend your choices during code re
 - Conditionals
   - Testing For (In)Equality
   - Ternary Operator
+- Strings
+  - Quoting
+  - Composition
+- Classes
+  - Getters &amp; Setters
+  - Extending Prototypes
 - Functions
   - Optimum Size
   - Early Return
   - Closures
   - Nesting
   - Chaining
-- Strings
-  - Quoting
-  - Composition
 - Modules
   - Strict Mode
   - Requires At Top
@@ -44,9 +47,6 @@ If you must deviate from them, be prepared to defend your choices during code re
   - Standard Pattern
   - Commented-Out Code
   - Documentation
-- Classes
-  - Getters &amp; Setters
-  - Extending Prototypes
 - Callbacks
   - Standard Pattern
   - Error Handling
@@ -65,17 +65,17 @@ If you must deviate from them, be prepared to defend your choices during code re
 
 
 
-## General Rules
+## &sect; General Rules
 
-### &rarr; Statements
+###  Statements
 
 Use a semi-colon (;) to end statements
 
-### &rarr; End Of Line (EOL)
+###  End Of Line (EOL)
 
 End of line is defined as new-line ('\n')
 
-### &rarr; Indenting
+###  Indenting
 
 Use two spaces for every tab-stop.
 
@@ -86,7 +86,7 @@ sacrificing editing space.
 
 Tabs do not belong in code because they can interfere with presentation and printing.
 
-### &rarr; Comments
+###  Comments
 
 Use slash-style comments.
 
@@ -114,11 +114,11 @@ for(let i=0; i<len; i++) { // iterate over the contents of the array
 obj.type = 'foo';
 ```
 
-### &rarr; Trailing Whitespace
+###  Trailing Whitespace
 
 Lines should not end with whitespace ('\s\t')
 
-### &rarr; Crazy Train
+###  Crazy Train
 
 Please do not use
 
@@ -130,7 +130,7 @@ Please do not use
 
 because they are profoundly evil and can damn you forever.
 
-### &rarr; Line Length
+###  Line Length
 
 Line length should never be greater than 120 characters.
 
@@ -140,9 +140,9 @@ Line length should never be greater than 120 characters.
 
 120-char lines print well using landscape mode.
 
-## Scoping
+## &sect; Scoping
 
-### &rarr; Use Of Global Scope
+###  Use Of Global Scope
 
 Do not scope variables globally.
 
@@ -194,7 +194,7 @@ window.setTimeout(eatUpRange, 10);
 window.setTimeout(printRange, 10);  //=> 2 3 7 8 9 !!!
 ```
 
-### &rarr; Variables
+###  Variables
 
 Know your scoping rules and scope all variables correctly.
 
@@ -255,7 +255,7 @@ const { FOO } = require('./producer.js');
 console.log(FOO);
 ```
 
-### &rarr; Arrow Functions
+###  Arrow Functions
 
 ```js
   // incorrect
@@ -274,9 +274,9 @@ console.log(FOO);
   }
 ```
 
-## Variables
+## &sect; Variables
 
-### &rarr; Naming
+###  Naming
 
 Use lowerCamelCase for variables, properties, arguments and function names.
 
@@ -304,7 +304,7 @@ const obj = {
 function do_something(first_argument) { ... }
 ```
 
-### &rarr; Declarations
+###  Declarations
 
 Use `let` or `const` to define variables, never `var`.
 
@@ -355,7 +355,7 @@ Rather we're setting properties within it, which doesn't reassign the value of `
 
 When in doubt, use `const` to define everything you **know** should be immutable.
 
-### &rarr; Objects &amp; Arrays
+###  Objects &amp; Arrays
 
 Declare objects using `{}` and array using `[]`.
 
@@ -392,13 +392,13 @@ const obj = new Object({ type:'foo'}); // inconsistent spacing
 const bigObj = {  a: 1, b: 2, c: 3, d: 4, e: 5, f: 6, g: 7, h: 8, i: 9, j: 10, };
 ```
 
-### &rarr; Type Checking
+###  Type Checking
 
 TBD
 
 See [lodash]()
 
-### &rarr; Instance Checking
+###  Instance Checking
 
 When using the `instanceof` operator, the right operand must be a predefined class.
 
@@ -418,7 +418,7 @@ if(foo instanceof '' || foo instanceof null) {
 }
 ```
 
-### &rarr; Existence Testing
+###  Existence Testing
 
 Use [lodash]()'s `isNil()` function to test the non-existence of a variable.
 
@@ -438,9 +438,9 @@ if(typeof foo !== 'undefined' && foo !== null) {
 }
 ```
 
-## Conditionals
+## &sect; Conditionals
 
-### &rarr; Testing For (In)Equality
+###  Testing For (In)Equality
 
 Always use the `===` and `!==` operators.
 
@@ -474,7 +474,7 @@ Are these equivalent?
 Misuse of the equivalency operators can lead to subtle, difficult to locate errors
 so you should never use `==` or `!=` *unless you __really__ understand what they do*.
 
-### &rarr; Ternary Operator
+###  Ternary Operator
 
 Ternary operators (`condition ? consequent : alternate`) should never appear on a single line.
 
@@ -502,21 +502,9 @@ const foo = (resultOfTest) ? true : false;
 const result = (value === true) ? 1 : -1;
 ```
 
-## Functions
+## &sect; Strings
 
-### &rarr; Optimum Size
-
-### &rarr; Early return
-
-### &rarr; Closures
-
-### &rarr; Nesting
-
-### &rarr; Chaining
-
-## Strings
-
-### &rarr; Quoting
+###  Quoting
 
 Use single-quotes.
 
@@ -532,7 +520,7 @@ something they have to convert in their heads to a more understandable form. Thi
 critical when bug-hunting under time pressure. If everyone uses the same quoting style,
 strings appear the same to everyone.
 
-### &rarr; Composition
+###  Composition
 
 Use string templates rather than concatenation.
 
@@ -568,9 +556,29 @@ While the second operation requires only three operations:
 
 and seems cluttered and harder to parse.
 
-## Modules
+## &sect; Classes
 
-### &rarr; Strict Mode
+###  Getters &amp; Setters
+
+###  Extending Prototypes
+
+Don't do it!
+
+## &sect; Functions
+
+###  Optimum Size
+
+###  Early return
+
+###  Closures
+
+###  Nesting
+
+###  Chaining
+
+## &sect; Modules
+
+###  Strict Mode
 
 `use 'strict';` should be the first non-whitespace, non-comment line of all modules.
 
@@ -581,9 +589,9 @@ See [John Resig - ECMAScript 5 Strict Mode, JSON, and More](http://ejohn.org/blo
 **NOTE:** Strict mode will throw an error if you attempt to use the global object. See
 [Use of Global Scope](https://github.com/raisch/sandbox/blob/master/CODING.md#use-of-global-scope)
 
-### &rarr; Requires At Top
+###  Requires At Top
 
-### &rarr; Indenting
+###  Indenting
 
 Maintain correct indenting at all times.
 
@@ -591,7 +599,7 @@ Maintain correct indenting at all times.
 
 Unnecessary indenting interferes with both navigation and understandability.
 
-### &rarr; Standard Pattern
+###  Standard Pattern
 
 Define modules using standard patterns.
 
@@ -703,25 +711,17 @@ mod.type = Module.Types.EVENT; // using its setter
 
 This is far a cleaner module pattern and does not rely on globals.
 
-### &rarr; Commented-Out Code
+###  Commented-Out Code
 
 Don't push code with sections that have been commented out.
 
 #### Rationale
 
-### &rarr; Documentation
+### Documentation
 
-## classes
+## &sect; Callbacks
 
-### &rarr; Getters &amp; Setters
-
-### &rarr; Extending Prototypes
-
-Don't do it!
-
-## Callbacks
-
-### &rarr; Standard Pattern
+###  Standard Pattern
 
 Use the standard callback pattern.
 
@@ -747,21 +747,21 @@ function(...args, cb) {
 }
 ```
 
-### &rarr; Callback Error Handling
+###  Callback Error Handling
 
-## Code Quality
+## &sect; Code Quality
 
-### &rarr; Linting
+###  Linting
 
-### &rarr; Unit Testing
+###  Unit Testing
 
-### &rarr; Integration Testing
+###  Integration Testing
 
 ## Appendices
 
-### &rarr; Standard Development Environment
+###  Standard Development Environment
 
-## &rarr; Power Developer Toolkit
+##  Power Developer Toolkit
 
 ### assert
 
