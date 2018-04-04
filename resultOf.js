@@ -66,17 +66,25 @@ usingTryCatch()
 
 // new way
 
-const usingResultOf = async () => {
-  let [err, res] = await resultOf(expectFailAsync())
+const usingResultOf = async (...args) => {
+  let [err, res] = await resultOf(expectFailAsync(args))
   console.log(`NEW usingResultOf: ${JSON.stringify([err, res])}`)
 }
 
 usingResultOf()
 
 const usingThenCatch = async (...args) => {
-  const result = await expectFailAsync()
+  const result = await expectFailAsync(args)
     .then(res => console.log(`ALT usingThenCatch:${JSON.stringify({res})}`))
     .catch(err => console.log(`ALT usingThenCatch: ${JSON.stringify({err})}`)) // unneeded since all results are [err, res]
 }
 
 usingThenCatch()
+
+/* prints to console:
+
+  OLD usingTryCatch Error: expectFailAsync ran out of time
+  ALT usingThenCatch: {"err":"expectFailAsync ran out of time"}
+  NEW usingResultOf: ["expectFailAsync ran out of time",null]
+
+ */
